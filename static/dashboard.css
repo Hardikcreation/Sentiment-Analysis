@@ -1,0 +1,43 @@
+body {
+    background-color: #f8f9fa;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 100%;
+}
+
+#posts-container {
+    max-height: 600px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.post-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.post-item:hover {
+    background-color: #e9ecef;
+}
+
+.chart-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 400px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+    }
+}

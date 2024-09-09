@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="text-center">Social Media Sentiment Analysis</h2>
+<p class="text-center">Welcome, {{ username }}!</p>
+
+<div class="row">
+    <!-- Posts and Comments List -->
+    <div class="col-lg-4 col-md-5 col-12 mb-4">
+        <h4>Posts</h4>
+        <div id="posts-container" class="overflow-auto">
+            {% for post in posts %}
+            <div class="card mb-3 post-item" data-post-id="{{ post.id }}">
+                <div class="card-header">
+                    <strong>{{ post.message|truncate(50) }}</strong>
+                    <p><small>{{ post.created_time }}</small></p>
+                </div>
+                <div class="card-body">
+                    <h5>Comments</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for comment in post_sentiment_data[post.id]['Comments'] %}
+                        <li class="list-group-item">
+                            <p><strong>Comment:</strong> {{ comment['Comment Message'] }}</p>
+                            <p><strong>Sentiment:</strong> {{ comment['Sentiment'] }}</p>
+                            <p><small>{{ comment['Created Time'] }}</small></p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="col-lg-8 col-md-7 col-12">
+        <h4>Sentiment Analysis</h4>
+        <div class="chart-container">
+            <canvas id="sentimentChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const postSentimentData = {{ post_sentiment_data|tojson }};
+    let sentimentChart;
+
+    function updateChart(postId) {
+        const postData = postSentimentData[postId];
+        
+        const labels = ['Positive', 'Negative', 'Neutral'];
+        const data = [
+            postData['Positive'],
+            postData['Negative'],
+            postData['Neutral']
+        ];
+
+        if (sentimentChart) {
+            sentimentChart.destroy();
+        }
+
+        const ctx = document.getElementById('sentimentChart').getContext('2d');
+        sentimentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Comments',
+                    data: data,
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const postItems = document.querySelectorAll('.post-item');
+        postItems.forEach(function(item) {
+            item.addEventListener('click', function() {
+                const postId = this.getAttribute('data-post-id');
+                updateChart(postId);
+            });
+        });
+    });
+</script>
+{% endblock %}
