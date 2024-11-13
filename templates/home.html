@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop id="bg-video">
+        <source src="{{ url_for('static', filename='home.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<div class="container content-overlay">
+    <h2 class="text-center animated fadeInDown">Social Media Sentiment Analysis</h2>
+    <p class="text-center animated fadeInUp delay-1s">Understand public opinions through sentiment analysis on various platforms.</p>
+
+    <!-- Section for Social Media Data Overview -->
+    <div class="row mt-5">
+        <div class="col-md-4 text-center">
+            <div class="icon-circle animated bounceIn delay-1s">
+                <i class="fas fa-thumbs-up fa-3x"></i>
+            </div>
+            <h5 class="mt-3">Positive Sentiments</h5>
+            <p class="animated fadeInUp delay-1s">Data-driven insights into positive feedback.</p>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <div class="icon-circle animated bounceIn delay-2s">
+                <i class="fas fa-meh fa-3x"></i>
+            </div>
+            <h5 class="mt-3">Neutral Sentiments</h5>
+            <p class="animated fadeInUp delay-2s">Analyzing the neutral perspectives.</p>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <div class="icon-circle animated bounceIn delay-3s">
+                <i class="fas fa-thumbs-down fa-3x"></i>
+            </div>
+            <h5 class="mt-3">Negative Sentiments</h5>
+            <p class="animated fadeInUp delay-3s">Explore areas of improvement from negative feedback.</p>
+        </div>
+    </div>
+
+    <!-- Login and Signup Buttons -->
+    <div class="row mt-5">
+        <div class="col-md-12 text-center">
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg mr-3 animated fadeIn delay-1s">Login</a>
+            <a href="{{ url_for('signup') }}" class="btn btn-secondary btn-lg animated fadeIn delay-2s">Sign Up</a>
+        </div>
+    </div>
+</div>
+
+<!-- Link to the separate CSS file -->
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+{% endblock %}

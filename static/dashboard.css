@@ -1,0 +1,301 @@
+/* General Body Styling */
+
+body {
+    padding-top: 70px;
+    background-color: #f0f9ff;
+}
+
+
+/* Remove margins and make content fit full width */
+
+
+/* Full-width container for 16-inch screens */
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    padding: 0;
+    max-width: 100%;
+}
+
+.carousel-inner {
+    width: 100%;
+    height: 400px;
+}
+
+.carousel-image {
+    object-fit: cover;
+    width: 100%;
+    height: 400px;
+    /* Ensures images maintain the desired height */
+}
+
+
+/* Remove left and right padding on rows */
+
+.row {
+    margin: 0;
+}
+
+
+/* Adjust column widths to fit more content on larger screens */
+
+.col-md-7,
+.col-md-5 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+
+/* Navbar */
+
+.navbar {
+    background-color: #0072b5;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.navbar:hover {
+    background-color: #23395d;
+}
+
+.navbar-brand,
+.nav-link {
+    color: #61b5e6 !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.navbar-brand:hover,
+.nav-link:hover {
+    color: #23395d !important;
+}
+
+.navbar-nav .nav-item.active .nav-link {
+    color: #23395d;
+}
+
+
+/* About Section Styling */
+
+.about-section {
+    padding: 40px 0;
+    margin-top: 15px;
+    border: 2px solid black;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.about-section:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.about-image {
+    width: 80%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.about-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+
+/* Select Box Styling */
+
+#page_id {
+    width: 220px;
+    padding: 10px;
+    border: 1px solid #f01109;
+    border-radius: 5px;
+    background-color: #f4f9fc;
+    color: #1d3557;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+#page_id:focus {
+    border-color: #0072b5;
+    outline: none;
+}
+
+#page_id option {
+    color: #23395d;
+    background-color: #ffffff;
+}
+
+#page_id option:hover {
+    background-color: #c9f0ff;
+}
+
+
+/* Card Styling */
+
+.small-card {
+    background-color: #eeecec;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+    border: 2px solid transparent;
+    animation: fadeIn 0.6s ease-in-out;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.small-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #e0f4ff;
+    border-color: #0072b5;
+}
+
+.small-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0072b5;
+}
+
+.small-card .card-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #23395d;
+}
+
+
+/* Border Container */
+
+.border-container {
+    border: 2px solid #333;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+/* Posts Section */
+
+
+/* Posts Section */
+
+#posts-container {
+    max-width: 100%;
+    max-height: 500px;
+    /* Set a height limit for the posts container */
+    overflow-y: auto;
+    /* Enables vertical scrolling */
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+
+/* Optional: Styling for post cards to add some space */
+
+.post-item {
+    margin-bottom: 15px;
+}
+
+
+/* Graphs Section */
+
+.graphs-section {
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.graph-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Headings */
+
+h2 {
+    color: #003f88;
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h4 {
+    color: #0072b5;
+    margin-top: 20px;
+}
+
+
+/* Footer */
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-contact p,
+.footer-contact a {
+    color: #ddd;
+    line-height: 1.5;
+}
+
+
+/* Mobile Adjustments */
+
+@media (max-width: 768px) {
+    .stats-and-chart {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stats-box,
+    .chart-container {
+        width: 90%;
+    }
+
+    #posts-container {
+        max-width: 90%;
+    }
+}
+
+* Mobile Adjustments */ @media (max-width: 768px) {
+    .stats-and-chart {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stats-box,
+    .chart-container {
+        width: 90%;
+    }
+
+    #posts-container {
+        max-width: 90%;
+    }
+}

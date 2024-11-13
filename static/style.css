@@ -1,0 +1,236 @@
+/* General Styling */
+
+body {
+    padding-top: 70px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f9;
+    /* Soft light background */
+    color: #333333;
+    /* Dark gray text for readability */
+    margin: 0;
+    /* padding: 0; */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Ensure the body takes the full height of the viewport */
+}
+
+
+/* Content Area */
+
+.content {
+    flex: 1;
+    /* Allow content to grow and take up available space */
+    padding: 20px;
+    /* Add some padding to the content */
+}
+
+.logo {
+    width: 120px;
+    /* Increase the size of the logo */
+    height: auto;
+}
+
+
+/* Navbar */
+
+.navbar {
+    background-color: #ffffff;
+    /* Clean white navbar */
+    border-bottom: 2px solid #e0e0e0;
+    /* Subtle border for navbar */
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Soft shadow for depth */
+    transition: background-color 0.3s;
+    /* Transition for background color */
+}
+
+.navbar:hover {
+    background-color: #e0f7fa;
+    /* Light cyan background on hover */
+}
+
+.navbar-brand,
+.nav-link {
+    color: #00796b !important;
+    /* Dark teal for branding */
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+    /* Transition for text color */
+}
+
+.navbar-brand:hover,
+.nav-link:hover {
+    color: #004d40 !important;
+    /* Darker teal hover effect */
+}
+
+
+/* Dropdown Form */
+
+#pageForm {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    width: 250px;
+}
+
+
+/* Active Link */
+
+.navbar-nav .nav-item.active .nav-link {
+    color: #004d40;
+    /* Darker teal for active link */
+}
+
+
+/* Forms */
+
+form {
+    background-color: #ffffff;
+    /* White background for forms */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Softer shadow for clean look */
+    max-width: 500px;
+    margin: 30px auto;
+    border: 1px solid #e0e0e0;
+    /* Light border */
+    transition: transform 0.2s;
+    /* Transition for scaling */
+}
+
+form:hover {
+    transform: scale(1.02);
+    /* Scale effect on hover */
+}
+
+.form-control {
+    background-color: #e0f7fa;
+    /* Light cyan input background */
+    color: #333333;
+    /* Dark text in inputs */
+    border-radius: 6px;
+    border: 1px solid #b2dfdb;
+    /* Soft border for inputs */
+    padding: 10px;
+}
+
+.form-control:focus {
+    border-color: #00796b;
+    /* Focus border for input fields */
+    box-shadow: 0 0 8px rgba(0, 121, 107, 0.2);
+    /* Light teal focus shadow */
+}
+
+button.btn {
+    background-color: #009688;
+    /* Teal button */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s;
+    /* Transition for background and scale */
+}
+
+button.btn:hover {
+    background-color: #00796b;
+    /* Darker teal on hover */
+    transform: scale(1.05);
+    /* Scale effect on hover */
+}
+
+
+/* Headings */
+
+h2 {
+    color: #004d40;
+    /* Darker teal for headings */
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+
+/* Footer */
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-contact {
+    font-size: 0.9rem;
+}
+
+.footer-contact p,
+.footer-contact a {
+    color: #ddd;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-copyright {
+    font-size: 0.9rem;
+}
+
+
+/* Alert Messages */
+
+.alert {
+    border-radius: 8px;
+    font-weight: 500;
+    background-color: #ffebee;
+    /* Light pink background for alerts */
+    color: #d32f2f;
+    /* Bright red for alert text */
+    text-align: center;
+}
+
+
+/* Dropdown */
+
+.dropdown-menu {
+    background-color: #e0f7fa;
+    /* Light cyan dropdown background */
+    border-radius: 8px;
+    border: 1px solid #b2dfdb;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    color: #333333;
+}
+
+.dropdown-item:hover {
+    background-color: #b2ebf2;
+    /* Light teal on hover */
+}
+
+
+/* Mobile Adjustments */
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+    .navbar-brand {
+        margin: auto;
+    }
+}

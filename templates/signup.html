@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+<h2>Signup</h2>
+<form method="post" class="mt-4">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" name="username" id="username" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" name="password" id="password" required>
+        <small class="form-text text-muted">
+            * Password must be at least 8 characters long. <br>
+            * Must contain at least one uppercase letter. <br>
+            * Must contain one lowercase letter. <br>
+            * Must contain one number. <br>
+            * Must contain one special character.
+        </small>
+    </div>
+    <div class="form-group">
+        <label for="password_confirmation">Confirm Password:</label>
+        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Signup</button>
+</form>
+
+{% endblock %}
