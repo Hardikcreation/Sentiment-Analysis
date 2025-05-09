@@ -127,7 +127,7 @@ async def fetch_and_store_data(page_id, access_token):
 
 # Run within Flask app context
 with app.app_context():
-    page_id = '1052601808104708'
-    access_token = 'EAAMQPmFBDa0BO517DIvGrs0ywZBPHQ23NPPkKZAETU3ItKgbuumSxRFyqAnZClChuTJZB2kdwPJUEcu3Jt4zuykIaZC6tYDPCBXF3ZABDcOqLKBVF35pS0iGdnWSTZBcU4SPWCxc00QRdZA6TfZBsbC2zAecXiYq7jmtRcKD5wqC9ZBdMPXFnTBs5HEP5G459UAKEJ'
+    page_id = '1448364408720250'
+    access_token = 'EAAMQPmFBDa0BOwdppB9AiAPPIJuNQHqEUPRmGAI4v8VyfodKNKusycz4Min90jpMAy7xqXvrMYsSi86aY84YMujTFrQPof7w5sTnZC5luQL8D0JZBm1oTWH8DC8RFcsufrEiPnF0wPkJcQnJfcDZCtxNLrMGME4sFNgIoszB89PTYIySEQI02pSdJX7a0MfnlrlUtGb9w7LKUJZBGuuQqv4d4tT79f3pl1sZD'
 
     asyncio.run(fetch_and_store_data(page_id, access_token))

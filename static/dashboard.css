@@ -1,54 +1,72 @@
 /* General Body Styling */
-
 body {
     padding-top: 70px;
-    background-color: #f0f9ff;
+    /* background-color: #f0f9ff; */
 }
-
 
 /* Remove margins and make content fit full width */
-
-
-/* Full-width container for 16-inch screens */
-
 .container {
-    margin: 0 auto;
     width: 100%;
-    padding: 0;
+    padding: 0 20px;
     max-width: 100%;
+    margin: 50px auto;
 }
 
-.carousel-inner {
-    width: 100%;
-    height: 400px;
+.hero-text h1 {
+    font-size: 3.8rem;
+    font-weight: 700;
+    color: #23395d;
 }
 
-.carousel-image {
-    object-fit: cover;
-    width: 100%;
-    height: 400px;
-    /* Ensures images maintain the desired height */
+.hero-text p {
+    font-size: 1.8rem;
+    margin-top: 15px;
+    color: #555;
 }
 
-
-/* Remove left and right padding on rows */
-
-.row {
-    margin: 0;
+.align-items-center {
+    background-color: #f8f9fa;
+    /* padding: 80px 0; */
+    /* min-height: 100vh; */
 }
 
-
-/* Adjust column widths to fit more content on larger screens */
-
-.col-md-7,
-.col-md-5 {
-    flex: 0 0 auto;
-    width: 100%;
+/*
+.hero-text h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #23395d;
 }
 
+.hero-text p {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    color: #555;
+}
+
+.hero-text .btn-primary {
+    margin-top: 25px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    background-color: #0072b5;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.hero-text .btn-primary:hover {
+    background-color: #23395d;
+}
+
+.align-items-center {
+    display: flex;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+} */
 
 /* Navbar */
-
 .navbar {
     background-color: #0072b5;
     padding: 15px;
@@ -64,7 +82,7 @@ body {
 .nav-link {
     color: #61b5e6 !important;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     transition: color 0.3s;
 }
 
@@ -77,34 +95,58 @@ body {
     color: #23395d;
 }
 
-
 /* About Section Styling */
-
 .about-section {
-    padding: 40px 0;
-    margin-top: 15px;
-    border: 2px solid black;
-    transition: box-shadow 0.3s ease-in-out;
+    padding: 60px 10px;
+    margin-top: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .about-section:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.about-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.about-description p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
 }
 
 .about-image {
-    width: 80%;
-    border-radius: 8px;
+    width: 100%;
+    height: 600px;
+    border-radius: 10px;
     object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.about-description {
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
+@media (max-width: 768px) {
+    .about-section {
+        padding: 40px 15px;
+    }
 
+    .about-image {
+        width: 100%;
+    }
+}
 
 /* Select Box Styling */
-
 #page_id {
     width: 220px;
     padding: 10px;
@@ -130,17 +172,15 @@ body {
     background-color: #c9f0ff;
 }
 
-
 /* Card Styling */
-
 .small-card {
-    background-color: #eeecec;
-    border-radius: 10px;
-    padding: 20px;
+    background: linear-gradient(145deg, #f1f3f4, #dfe1e5);
+    border-radius: 12px;
+    padding: 25px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
-    border: 2px solid transparent;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e0e0e0;
     animation: fadeIn 0.6s ease-in-out;
     opacity: 0;
     animation-fill-mode: forwards;
@@ -160,59 +200,49 @@ body {
 
 .small-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    background-color: #e0f4ff;
-    border-color: #0072b5;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    background-color: #e8f4ff;
+    border-color: #3399ff;
 }
 
 .small-card .card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #0072b5;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a73e8;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .small-card .card-text {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: bold;
-    color: #23395d;
+    color: #202124;
 }
 
-
 /* Border Container */
-
 .border-container {
     border: 2px solid #333;
     padding: 20px;
     border-radius: 8px;
 }
 
-
 /* Posts Section */
-
-
-/* Posts Section */
-
 #posts-container {
     max-width: 100%;
     max-height: 500px;
-    /* Set a height limit for the posts container */
     overflow-y: auto;
-    /* Enables vertical scrolling */
     background-color: #ffffff;
     border-radius: 8px;
     padding: 15px;
 }
 
-
 /* Optional: Styling for post cards to add some space */
-
 .post-item {
     margin-bottom: 15px;
 }
 
-
 /* Graphs Section */
-
 .graphs-section {
     max-width: 40%;
     display: flex;
@@ -227,9 +257,7 @@ body {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
 /* Headings */
-
 h2 {
     color: #003f88;
     font-weight: bold;
@@ -243,9 +271,7 @@ h4 {
     margin-top: 20px;
 }
 
-
 /* Footer */
-
 .footer {
     background-color: #333;
     color: #fff;
@@ -265,9 +291,7 @@ h4 {
     line-height: 1.5;
 }
 
-
 /* Mobile Adjustments */
-
 @media (max-width: 768px) {
     .stats-and-chart {
         flex-direction: column;
@@ -284,7 +308,8 @@ h4 {
     }
 }
 
-* Mobile Adjustments */ @media (max-width: 768px) {
+/* Duplicate Mobile Adjustments (Possibly unintentional) */
+@media (max-width: 768px) {
     .stats-and-chart {
         flex-direction: column;
         align-items: center;
@@ -298,4 +323,40 @@ h4 {
     #posts-container {
         max-width: 90%;
     }
+}
+
+.contact {
+    display: flex;
+    padding: 20px;
+    margin: 30px;
+}
+
+.contact form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact input,
+.contact textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80%;
+}
+
+.contact button {
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 80%;
+}
+
+.img-con {
+    height: 450px;
+    width: 100%;
+    border-radius: 25px;
 }
