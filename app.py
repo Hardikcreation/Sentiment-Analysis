@@ -8,7 +8,7 @@ from sqlalchemy import func, case
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hardik%40123@localhost/sentiment_analysis'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:t%40nishq123@localhost/sentiment_analysis'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -100,6 +100,8 @@ def dashboard():
 
         sentiment_time_data = defaultdict(list)
         total_comments = 0
+        total_likes = 0
+        total_shares = 0
 
         for post in posts:
             post_id = post.id
@@ -108,6 +110,9 @@ def dashboard():
             image_url = post.image_url
             likes = post.likes  # Assuming this is how likes are stored
             shares = post.shares  # Assuming this is how shares are stored
+
+            total_likes += likes
+            total_shares += shares
 
             comments = Comment.query.filter_by(post_id=post_id).all()
             total_comments += len(comments)
@@ -156,7 +161,9 @@ def dashboard():
             post_sentiment_data=post_sentiment_data,
             sentiment_time_data=sentiment_time_data,
             total_posts=total_posts,
-            total_comments=total_comments
+            total_comments=total_comments,
+            total_likes=total_likes,
+            total_shares=total_shares
         )
     else:
         flash('You need to login first!')

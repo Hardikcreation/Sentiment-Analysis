@@ -2,8 +2,10 @@ import requests
 import json
 from textblob import TextBlob
 from deep_translator import GoogleTranslator  # Updated import
+from transformers import XLMRobertaTokenizer, AutoModelForSequenceClassification, pipeline
+from langdetect import detect
 from models import db, Post, Comment
-from datetime import datetime
+from datetime import datetime, time
 from flask import Flask
 import hashlib
 import asyncio  # For parallel requests
@@ -11,7 +13,7 @@ import aiohttp  # Async HTTP requests
 
 # Initialize Flask app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hardik%40123@localhost/sentiment_analysis'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:t%40nishq123@localhost/sentiment_analysis'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -28,28 +30,47 @@ async def fetch_and_store_data(page_id, access_token):
         def get_comments_url(post_id, access_token):
             return f"https://graph.facebook.com/v20.0/{post_id}/comments?limit=20&access_token={access_token}"
 
+
+        # Load the multilingual sentiment analysis model
+        model_name = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
+        tokenizer = XLMRobertaTokenizer.from_pretrained(model_name)
+        model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+        # Create a sentiment analysis pipeline
+        sentiment_pipeline = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
+
+        def convert_to_sentiment(label):
+            """
+            Convert model output label to sentiment category.
+            """
+            label = label.lower()
+            if label == 'negative':
+                return 'Negative'
+            elif label == 'neutral':
+                return 'Neutral'
+            elif label == 'positive':
+                return 'Positive'
+            else:
+                return 'Neutral'
+
         def analyze_sentiment(text):
+            """
+            Detect and return sentiment for a given text input.
+            """
             if not text:
                 return 'Neutral'
             
-            # Initialize deep-translator's GoogleTranslator
-            translator = GoogleTranslator(source='auto', target='en')  # Auto-detect the source language
-            
             try:
-                # Translate text to English (if necessary)
-                translated_text = translator.translate(text)
-                analysis = TextBlob(translated_text)
-                polarity = analysis.sentiment.polarity
-                
-                if polarity > 0:
-                    return 'Positive'
-                elif polarity < 0:
-                    return 'Negative'
-                else:
-                    return 'Neutral'
+                # Translate to English if not already
+                translated_text = GoogleTranslator(source='auto', target='en').translate(text)
+                result = sentiment_pipeline(translated_text)[0]
+                label = result['label']
+                return convert_to_sentiment(label)
             except Exception as e:
                 print(f"Error during sentiment analysis: {e}")
                 return 'Neutral'
+
+
 
         def convert_datetime(dt_str):
             try:
@@ -127,7 +148,7 @@ async def fetch_and_store_data(page_id, access_token):
 
 # Run within Flask app context
 with app.app_context():
-    page_id = '1448364408720250'
-    access_token = 'EAAMQPmFBDa0BOwdppB9AiAPPIJuNQHqEUPRmGAI4v8VyfodKNKusycz4Min90jpMAy7xqXvrMYsSi86aY84YMujTFrQPof7w5sTnZC5luQL8D0JZBm1oTWH8DC8RFcsufrEiPnF0wPkJcQnJfcDZCtxNLrMGME4sFNgIoszB89PTYIySEQI02pSdJX7a0MfnlrlUtGb9w7LKUJZBGuuQqv4d4tT79f3pl1sZD'
+    page_id = '27682782579'
+    access_token = 'EAAMQPmFBDa0BO09h3ASolliq2BRCCujLSalt4FpaqDrRZCbFuL2ZCIXwakltrMAawwUnUh5EsjCgZAqP1oTrqMXzoEcQ4YcO68OjyZCzZBkZAC7biDjhCnCMfUwKmF3yFjguG7UkPhWoHNwkqRue9L7urrzWRjDZBODkHTxnWFLrgFDwP4c6PcmQZAMDVZBXg'
 
     asyncio.run(fetch_and_store_data(page_id, access_token))
