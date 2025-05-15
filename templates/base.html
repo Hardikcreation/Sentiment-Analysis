@@ -10,13 +10,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <!-- Conditional CSS for different pages -->
-    {% if request.endpoint == 'home' %}
-    <!-- Link to the specific home page CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}"> {% elif 'dashboard' in request.endpoint
-    %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}"> {% else %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> {% endif %}
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"> 
+    
 </head>
 
 <body>
@@ -29,7 +25,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    {% if 'username' in session %}
                     <!-- Dropdown Form -->
                     <form id="pageForm" method="POST" action="{{ url_for('dashboard') }}">
                         <label for="page_id">Select Page:</label>
@@ -44,45 +39,18 @@
                                 %}selected{% endif %}>AajTak</option>
                         </select>
                     </form>
+
+                    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+
         
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                    </li>
         
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('signup') }}">Signup</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-                    </li>
-        
-                    {% endif %}
                 </ul>
             </div>
         </nav>
         
     </header>
 
-    <main class="container mt-5">
-        {% with messages = get_flashed_messages() %} {% if messages %}
-        <div class="alert alert-warning">
-            {% for message in messages %}
-            <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endif %} {% endwith %} {% block content %}{% endblock %}
-    </main>
-
+{% block content %}{% endblock %}
     <footer class="footer">
         <div class="container">
             <div class="row footer-content">

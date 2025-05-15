@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tweet Analytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- Sticky Header -->
+    <nav class="navbar navbar-light bg-light sticky-top shadow-sm p-3">
+        <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <h4 class="m-0 font-weight-bold mb-2 mb-md-0">X Analysis</h4>
+            <form class="form-inline d-flex flex-wrap justify-content-end w-100 w-md-auto" method="GET" action="{{ url_for('tweet_analysis') }}">
+                <input class="form-control mr-sm-2 mb-2 mb-sm-0" type="search" name="search"
+                    placeholder="Search hashtag or author" aria-label="Search" />
+                <button class="btn btn-outline-primary ml-0 ml-sm-2" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Content Container -->
+    <div class="container-fluid mt-4">
+        <!-- Charts Section -->
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="card mb-3">
+                    <h6>Sentiment Bar Chart</h6>
+                    <canvas id="barChart"></canvas>
+                </div>
+                <div class="card mb-3">
+                    <h6>Hashtag Frequency</h6>
+                    <canvas id="hashtagBarChart"></canvas>
+                </div>
+                <div class="card mb-3">
+                    <h5>Hashtags List</h5>
+                    <ul class="list-group" id="hashtagList"></ul>
+                </div>
+                <div class="card mb-3">
+                    <h6>Engagement Over Time</h6>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Tweet Activity -->
+            <div class="col-12 col-lg-6 d-flex flex-column">
+                <div class="card shadow flex-grow-1 scroll mb-3">
+
+                    <h5>Tweet Activity</h5>
+                    <ul class="list-group">
+                        {% for tweet in tweets[:10] %}
+                        <li class="list-group-item mb-3">
+                            <div class="d-flex flex-column flex-md-row align-items-start">
+                                {% if tweet.media_urls %}
+                                <div class="media-container me-md-3 mb-2">
+                                    {% set is_video = false %}
+                                    {% for url in tweet.media_urls.split(',') %}
+                                    {% if 'video' in url %}
+                                    {% set is_video = true %}
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    {% if is_video %}
+                                    <blockquote class="twitter-tweet">
+                                        <a href="https://twitter.com/i/status/{{ tweet.id }}"></a>
+                                    </blockquote>
+                                    {% else %}
+                                    {% for url in tweet.media_urls.split(',') %}
+                                    <img src="{{ url.strip() }}" alt="tweet media" class="tweet-image" />
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                                <div class="tweet-content">
+                                    <div class="mb-2">
+                                        <strong>{{ tweet.created_time.strftime('%Y-%m-%d %H:%M:%S') }}</strong><br>
+                                        <strong>Author:</strong> {{ tweet.author_id }}<br>
+                                        <strong>Hashtag:</strong> {{ tweet.hashtag }}<br>
+                                        <strong>Likes:</strong> {{ tweet.likes }} |
+                                        <strong>Retweets:</strong> {{ tweet.retweets }} |
+                                        <strong>Replies:</strong> {{ tweet.replies }} |
+                                        <strong>Quotes:</strong> {{ tweet.quotes }}<br>
+                                        <strong>Sentiment:</strong>
+                                        <span class="badge 
+                                            {% if tweet.sentiment == 'Positive' %}badge-success
+                                            {% elif tweet.sentiment == 'Negative' %}badge-danger
+                                            {% else %}badge-secondary
+                                            {% endif %}">{{ tweet.sentiment }}</span>
+                                    </div>
+                                    <p>{{ tweet.text }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted py-3 border-top">
+        &copy; 2025 X Analysis - Tweet Sentiment Dashboard
+    </footer>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Data from Python -->
+    <script>
+        const sentimentData = {{ sentiment_data | tojson }};
+        const tweets = {{ serialized_tweets | tojson }};
+        const hashtagLabels = {{ hashtag_labels | tojson }};
+        const hashtagCounts = {{ hashtag_counts | tojson }};
+        const timeLabels = {{ time_labels | tojson }};
+        const timeCounts = {{ time_counts | tojson }};
+    </script>
+
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</body>
+
+</html>
