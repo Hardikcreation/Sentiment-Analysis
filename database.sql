@@ -2,13 +2,20 @@ CREATE DATABASE sentiment_analysis;
 USE sentiment_analysis;
 
 
-
-
-CREATE TABLE user (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(80) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL
+CREATE TABLE tweet (
+    id VARCHAR(100) PRIMARY KEY,
+    author_id VARCHAR(100),
+    hashtag VARCHAR(100),
+    text TEXT,
+    created_time DATETIME,
+    likes INT,
+    retweets INT,
+    replies INT,
+    quotes INT,
+    sentiment VARCHAR(20),
+    media_urls TEXT
 );
+
 
 CREATE TABLE Post (
     id VARCHAR(255) PRIMARY KEY,          -- Post ID (string type, primary key)
@@ -35,12 +42,23 @@ CREATE TABLE Comment (
 
 
 
-
+drop table tweet;
 drop table post;
 drop table comment;
 
 SELECT * FROM user;
 SELECT * FROM post;
 SELECT * FROM comment;
+ALTER TABLE post MODIFY image_url TEXT;
+
+
+SET SQL_SAFE_UPDATES = 0;
+
+DELETE FROM comment;
+DELETE FROM post;
+
+
+
+
 
 
