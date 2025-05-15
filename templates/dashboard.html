@@ -48,7 +48,7 @@
         <div class="card text-center small-card">
             <div class="card-body">
                 <h6 class="card-title">Likes</h6>
-                <p class="card-text">{{ posts[0].likes }}</p>
+                <p class="card-text">{{ total_likes }}</p>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
         <div class="card text-center small-card">
             <div class="card-body">
                 <h6 class="card-title">Shares</h6>
-                <p class="card-text">{{ posts[0].shares }}</p>
+                <p class="card-text">{{ total_shares }}</p>
             </div>
         </div>
     </div>
@@ -78,6 +78,9 @@
                     <div class="card-header">
                         <strong>{{ post.message }}</strong>
                         <p><small>{{ post.created_time }}</small></p>
+                        <p><strong>Likes:</strong> {{ post.likes }}</p>
+                        <p><strong>Shares:</strong> {{ post.shares }}</p>
+                        <p><strong>Sentiment:</strong> {{ post.sentiment }}</p>
                     </div>
                     <div class="card-body">
                         {% if post_sentiment_data[post.id]['Image URL'] %}

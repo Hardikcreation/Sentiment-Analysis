@@ -1,56 +1,56 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Home{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Social Media Sentiment Analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block content %}
-<div class="video-background">
-    <video autoplay muted loop id="bg-video">
-        <source src="{{ url_for('static', filename='home.mp4') }}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</div>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<div class="container content-overlay">
-    <h2 class="text-center animated fadeInDown">Social Media Sentiment Analysis</h2>
-    <p class="text-center animated fadeInUp delay-1s">Understand public opinions through sentiment analysis on various platforms.</p>
+    <!-- Custom CSS -->
+    <style>
+        .card:hover {
+            transform: scale(1.02);
+            transition: 0.3s ease-in-out;
+        }
 
-    <!-- Section for Social Media Data Overview -->
-    <div class="row mt-5">
-        <div class="col-md-4 text-center">
-            <div class="icon-circle animated bounceIn delay-1s">
-                <i class="fas fa-thumbs-up fa-3x"></i>
+        body {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-5">
+        <h2 class="text-center mb-5">Social Media Sentiment Analysis</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-5 mb-4">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h4 class="card-title">Facebook Dashboard</h4>
+                        <p class="card-text">Analyze comments and sentiments from Facebook posts.</p>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                    </div>
+                </div>
             </div>
-            <h5 class="mt-3">Positive Sentiments</h5>
-            <p class="animated fadeInUp delay-1s">Data-driven insights into positive feedback.</p>
-        </div>
-
-        <div class="col-md-4 text-center">
-            <div class="icon-circle animated bounceIn delay-2s">
-                <i class="fas fa-meh fa-3x"></i>
+            <div class="col-md-5 mb-4">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h4 class="card-title">X (Twitter) Analysis</h4>
+                        <p class="card-text">Explore tweet sentiments and hashtag trends.</p>
+                        <a href="{{ url_for('tweet_analysis') }}" class="btn btn-info">Go to Tweet Analysis</a>
+                    </div>
+                </div>
             </div>
-            <h5 class="mt-3">Neutral Sentiments</h5>
-            <p class="animated fadeInUp delay-2s">Analyzing the neutral perspectives.</p>
-        </div>
-
-        <div class="col-md-4 text-center">
-            <div class="icon-circle animated bounceIn delay-3s">
-                <i class="fas fa-thumbs-down fa-3x"></i>
-            </div>
-            <h5 class="mt-3">Negative Sentiments</h5>
-            <p class="animated fadeInUp delay-3s">Explore areas of improvement from negative feedback.</p>
         </div>
     </div>
 
-    <!-- Login and Signup Buttons -->
-    <div class="row mt-5">
-        <div class="col-md-12 text-center">
-            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg mr-3 animated fadeIn delay-1s">Login</a>
-            <a href="{{ url_for('signup') }}" class="btn btn-secondary btn-lg animated fadeIn delay-2s">Sign Up</a>
-        </div>
-    </div>
-</div>
+    <!-- Footer -->
+    <footer class="text-center text-muted py-3 border-top">
+        &copy; 2025 Social Media Sentiment Analysis
+    </footer>
+</body>
 
-<!-- Link to the separate CSS file -->
-<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-
-{% endblock %}
+</html>

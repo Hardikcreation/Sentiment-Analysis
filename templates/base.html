@@ -10,6 +10,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
+<<<<<<< HEAD
     <!-- Conditional CSS for different pages -->
     {% if request.endpoint == 'home' %}
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
@@ -68,6 +69,58 @@
                         </li>
                         {% endif %}
                     </ul>
+=======
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"> 
+    
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="{{ url_for('home') }}">Analysis</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Dropdown Form -->
+                    <form id="pageForm" method="POST" action="{{ url_for('dashboard') }}">
+                        <label for="page_id">Select Page:</label>
+                        <select id="page_id" name="page_id" onchange="document.getElementById('pageForm').submit();">
+                            <option value="1448364408720250" {% if request.form.get('page_id')=='1448364408720250'
+                                %}selected{% endif %}>ISRO</option>
+                            <option value="1052601808104708" {% if request.form.get('page_id')=='1052601808104708'
+                                %}selected{% endif %}>Bhopal Smart City</option>
+                            <option value="368157233303532" {% if request.form.get('page_id')=='368157233303532'
+                                %}selected{% endif %}>Bhopal Municipal Corporation</option>
+                            <option value="27682782579" {% if request.form.get('page_id')=='27682782579'
+                                %}selected{% endif %}>AajTak</option>
+                        </select>
+                    </form>
+
+                    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+
+        
+        
+                </ul>
+            </div>
+        </nav>
+        
+    </header>
+
+{% block content %}{% endblock %}
+    <footer class="footer">
+        <div class="container">
+            <div class="row footer-content">
+                <!-- Left Side - Contact and Address -->
+                <div class="col-md-6 footer-contact">
+                    <h5>Contact Us</h5>
+                    <p>Address: Zone-14, Bhopal Municipal Corporation, BHEL, Govindpura, Bhopal - 462023 (MP)</p>
+                    <p>Email: bscdcl@smartbhopal.city</p>
+                    <p>Phone: +91-755 270 4293 +91-755 270 4261</p>
+>>>>>>> 71d5ae8e627e845ab2e1ee0e1a3f65bca077ee24
                 </div>
             </nav>
         </header>
