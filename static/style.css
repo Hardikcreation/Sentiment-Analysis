@@ -33,51 +33,36 @@ body {
 
 
 /* Navbar */
-
+/* Navbar */
 .navbar {
-    background-color: #ffffff;
-    /* Clean white navbar */
-    border-bottom: 2px solid #e0e0e0;
-    /* Subtle border for navbar */
+    background-color: #0072b5;
     padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for depth */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
-    /* Transition for background color */
 }
 
 .navbar:hover {
-    background-color: #e0f7fa;
-    /* Light cyan background on hover */
+    background-color: #23395d;
 }
 
 .navbar-brand,
 .nav-link {
-    color: #00796b !important;
-    /* Dark teal for branding */
+    color: #61b5e6 !important;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     transition: color 0.3s;
-    /* Transition for text color */
 }
 
 .navbar-brand:hover,
 .nav-link:hover {
-    color: #004d40 !important;
-    /* Darker teal hover effect */
+    color: #23395d !important;
+}
+
+.navbar-nav .nav-item.active .nav-link {
+    color: #23395d;
 }
 
 
-/* Dropdown Form */
-
-#pageForm {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-    width: 250px;
-}
 
 
 /* Active Link */
@@ -161,7 +146,6 @@ h2 {
 
 
 /* Footer */
-
 .footer {
     background-color: #333;
     color: #fff;
@@ -175,21 +159,11 @@ h2 {
     flex-wrap: wrap;
 }
 
-.footer-contact {
-    font-size: 0.9rem;
-}
-
 .footer-contact p,
 .footer-contact a {
     color: #ddd;
-    margin: 0;
     line-height: 1.5;
 }
-
-.footer-copyright {
-    font-size: 0.9rem;
-}
-
 
 /* Alert Messages */
 
@@ -230,6 +204,7 @@ h2 {
     .navbar-nav {
         text-align: center;
     }
+
     .navbar-brand {
         margin: auto;
     }
