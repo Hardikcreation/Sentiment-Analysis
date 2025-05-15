@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Twitter API
-BEARER_TOKEN = os.getenv('TWITTER_BEARER_TOKEN')
+BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAACYwwAEAAAAAvcTUDghjzMxc0D0hGeajhNkvrzw%3DunrtIILl6GXrH6PUOoNEHvGCD6kwl73277bZxuwoB1Xcv8a8YH"
 if not BEARER_TOKEN:
     raise ValueError("Twitter Bearer Token is missing in .env")
 
@@ -170,6 +170,6 @@ if __name__ == '__main__':
     get_tweets_by_hashtag(
         hashtag="IStandwithSharmishta",
         max_results=10,
-        start_date_str="2025-05-09",
-        end_date_str="2025-05-15"  # End date is exclusive 
+        start_date_str="2025-05-12",
+        end_date_str="2025-05-14"  # End date is exclusive 
     )
