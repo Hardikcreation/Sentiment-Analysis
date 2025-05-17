@@ -10,151 +10,74 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<<<<<<< HEAD
-    <!-- Conditional CSS for different pages -->
-    {% if request.endpoint == 'home' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-    {% elif 'dashboard' in request.endpoint %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
-    {% else %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    {% endif %}
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
 </head>
 
-<body>
-    <div class="wrapper d-flex flex-column min-vh-100"> <!-- Added wrapper -->
-
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-                <a class="navbar-brand" href="{{ url_for('home') }}">Analysis</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+                    <h4 class="font-weight-bold text-white">Facebook Analysis</h4>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        {% if 'username' in session %}
-                        <form id="pageForm" method="POST" action="{{ url_for('dashboard') }}">
-                            <label for="page_id">Select Page:</label>
-                            <select id="page_id" name="page_id"
-                                onchange="document.getElementById('pageForm').submit();">
-                                <option value="1448364408720250" {% if request.form.get('page_id')=='1448364408720250'
-                                    %}selected{% endif %}>ISRO</option>
-                                <option value="1052601808104708" {% if request.form.get('page_id')=='1052601808104708'
-                                    %}selected{% endif %}>Bhopal Smart City</option>
-                                <option value="368157233303532" {% if request.form.get('page_id')=='368157233303532'
-                                    %}selected{% endif %}>Bhopal Municipal Corporation</option>
-                            </select>
-                        </form>
 
+                <div class="" id="navbarNav">
+                    <ul class="navbar-nav align-items-lg-center w-100 flex-column flex-lg-row gap-2 gap-lg-3">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                            <form id="pageForm" method="POST" action="{{ url_for('dashboard') }}"
+                                class="d-flex flex-column flex-lg-row align-items-lg-center w-100">
+                                <label for="page_id" class="me-2 mb-1 mb-lg-0 text-white">Select Page:</label>
+                                <select id="page_id" name="page_id" class="form-select w-100 w-lg-auto"
+                                    onchange="document.getElementById('pageForm').submit();">
+                                    <option value="1448364408720250" {% if
+                                        request.form.get('page_id')=='1448364408720250' %}selected{% endif %}>ISRO
+                                    </option>
+                                    <option value="1052601808104708" {% if
+                                        request.form.get('page_id')=='1052601808104708' %}selected{% endif %}>Bhopal
+                                        Smart City</option>
+                                    <option value="368157233303532" {% if request.form.get('page_id')=='368157233303532'
+                                        %}selected{% endif %}>Bhopal Municipal Corporation</option>
+                                    <option value="27682782579" {% if request.form.get('page_id')=='27682782579'
+                                        %}selected{% endif %}>AajTak</option>
+                                    <option value="1437145013080740" {% if
+                                        request.form.get('page_id')=='1437145013080740' %}selected{% endif %}>Republic
+                                        Bharat</option>
+                                </select>
+                            </form>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                        </li>
-
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('signup') }}">Signup</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-                        </li>
-                        {% endif %}
                     </ul>
-=======
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"> 
-    
-</head>
-
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <a class="navbar-brand" href="{{ url_for('home') }}">Analysis</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <!-- Dropdown Form -->
-                    <form id="pageForm" method="POST" action="{{ url_for('dashboard') }}">
-                        <label for="page_id">Select Page:</label>
-                        <select id="page_id" name="page_id" onchange="document.getElementById('pageForm').submit();">
-                            <option value="1448364408720250" {% if request.form.get('page_id')=='1448364408720250'
-                                %}selected{% endif %}>ISRO</option>
-                            <option value="1052601808104708" {% if request.form.get('page_id')=='1052601808104708'
-                                %}selected{% endif %}>Bhopal Smart City</option>
-                            <option value="368157233303532" {% if request.form.get('page_id')=='368157233303532'
-                                %}selected{% endif %}>Bhopal Municipal Corporation</option>
-                            <option value="27682782579" {% if request.form.get('page_id')=='27682782579'
-                                %}selected{% endif %}>AajTak</option>
-                        </select>
-                    </form>
-
-                    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-
-        
-        
-                </ul>
+                </div>
             </div>
         </nav>
-        
     </header>
 
-{% block content %}{% endblock %}
-    <footer class="footer">
+    {% block content %}{% endblock %}
+    <footer class="bg-dark text-white py-4">
         <div class="container">
-            <div class="row footer-content">
-                <!-- Left Side - Contact and Address -->
-                <div class="col-md-6 footer-contact">
-                    <h5>Contact Us</h5>
-                    <p>Address: Zone-14, Bhopal Municipal Corporation, BHEL, Govindpura, Bhopal - 462023 (MP)</p>
-                    <p>Email: bscdcl@smartbhopal.city</p>
-                    <p>Phone: +91-755 270 4293 +91-755 270 4261</p>
->>>>>>> 71d5ae8e627e845ab2e1ee0e1a3f65bca077ee24
-                </div>
-            </nav>
-        </header>
-
-        <main class="container mt-5 flex-fill">
-            {% with messages = get_flashed_messages() %} {% if messages %}
-            <div class="alert alert-warning">
-                {% for message in messages %}
-                <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-            {% endif %} {% endwith %}
-            {% block content %}{% endblock %}
-        </main>
-
-        <footer class="footer mt-auto">
-            <div class="container">
-                <div class="row footer-content">
-                    <div class="col-md-6 footer-contact">
-                        <h5>Contact Us</h5>
-                        <p>Address: Zone-14, Bhopal Municipal Corporation, BHEL, Govindpura, Bhopal - 462023 (MP)</p>
-                        <p>Email: bscdcl@smartbhopal.city</p>
-                        <p>Phone: +91-755 270 4293 +91-755 270 4261</p>
-                    </div>
-                    <div class="col-md-6 text-md-right text-center">
-                        <p>&copy; <span id="currentYear"></span>BSCDCL 2024. Made with love for great people.</p>
-                        <p>Bhopal Smart City Development Corporation</p>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="h5 mb-3"><i class="fas fa-map-marker-alt me-2"></i>Contact Us</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-home me-2"></i> Zone-14, Bhopal Municipal Corporation, BHEL,
+                            Govindpura, Bhopal - 462023 (MP)</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> bscdcl@smartbhopal.city</li>
+                        <li><i class="fas fa-phone me-2"></i> +91-755 270 4293 +91-755 270 4261</li>
+                    </ul>
                 </div>
             </div>
-        </footer>
-
-    </div>
-
+            <hr class="my-4 bg-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Social Media Sentiment Analysis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

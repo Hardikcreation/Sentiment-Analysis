@@ -11,20 +11,28 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body>
     <!-- Sticky Header -->
-    <nav class="navbar navbar-light bg-light sticky-top shadow-sm p-3">
-        <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <h4 class="m-0 font-weight-bold mb-2 mb-md-0">X Analysis</h4>
-            <form class="form-inline d-flex flex-wrap justify-content-end w-100 w-md-auto" method="GET" action="{{ url_for('tweet_analysis') }}">
-                <input class="form-control mr-sm-2 mb-2 mb-sm-0" type="search" name="search"
-                    placeholder="Search hashtag or author" aria-label="Search" />
-                <button class="btn btn-outline-primary ml-0 ml-sm-2" type="submit">Search</button>
-            </form>
+    <nav class="navbar navbar-dark bg-dark sticky-top shadow-sm p-3">
+        <div class="container-fluid">
+            <div
+                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100">
+                <h4 class="m-0 font-weight-bold mb-2 mb-md-0 me-md-auto text-white">X Analysis</h4>
+                <!-- Note the `me-md-auto` -->
+                <form class="d-flex" method="GET" action="{{ url_for('tweet_analysis') }}">
+                    <input class="form-control me-sm-2  m-2" type="search" name="search" placeholder="Search hashtag"
+                        aria-label="Search" />
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+
+            </div>
         </div>
     </nav>
+
 
     <!-- Content Container -->
     <div class="container-fluid mt-4">
@@ -106,9 +114,24 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center text-muted py-3 border-top">
-        &copy; 2025 X Analysis - Tweet Sentiment Dashboard
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="h5 mb-3"><i class="fas fa-map-marker-alt me-2"></i>Contact Us</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-home me-2"></i> Zone-14, Bhopal Municipal Corporation, BHEL,
+                            Govindpura, Bhopal - 462023 (MP)</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> bscdcl@smartbhopal.city</li>
+                        <li><i class="fas fa-phone me-2"></i> +91-755 270 4293 +91-755 270 4261</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Social Media Sentiment Analysis. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
     <!-- Chart.js -->

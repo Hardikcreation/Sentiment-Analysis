@@ -4,53 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <title>Social Media Sentiment Analysis</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <!-- Custom CSS -->
-    <style>
-        .card:hover {
-            transform: scale(1.02);
-            transition: 0.3s ease-in-out;
-        }
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
-        body {
-            background-color: #f8f9fa;
-        }
-    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 
-<body>
-    <div class="container py-5">
-        <h2 class="text-center mb-5">Social Media Sentiment Analysis</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-5 mb-4">
-                <div class="card shadow text-center">
-                    <div class="card-body">
-                        <h4 class="card-title">Facebook Dashboard</h4>
-                        <p class="card-text">Analyze comments and sentiments from Facebook posts.</p>
-                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5 mb-4">
-                <div class="card shadow text-center">
-                    <div class="card-body">
-                        <h4 class="card-title">X (Twitter) Analysis</h4>
-                        <p class="card-text">Explore tweet sentiments and hashtag trends.</p>
-                        <a href="{{ url_for('tweet_analysis') }}" class="btn btn-info">Go to Tweet Analysis</a>
-                    </div>
-                </div>
-            </div>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-chart-line me-2"></i>
+                <span class="font-weight-bold">Sentiment Analysis</span>
+            </a>
         </div>
-    </div>
+    </nav>
+
+    <main class="flex-grow-1">
+        <!-- Hero Section -->
+        <section class="hero-section py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h1 class="display-4 font-weight-bold mb-3">Social Media Sentiment Analysis</h1>
+                        <p class="lead mb-4">Analyze and visualize opinions expressed on social media platforms with
+                            real-time sentiment analysis.</p>
+                        <button class="btn btn-primary btn-lg btn-pulse">Get Started <i
+                                class="fas fa-arrow-right ms-2"></i></button>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="/static/bhopal.webp" class="img-fluid rounded shadow floating"
+                            alt="Sentiment Analysis Visualization">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Cards -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100 shadow hover-zoom">
+                                    <div class="card-body text-center p-4">
+                                        <div class="icon-wrapper mb-3 bg-primary-light">
+                                            <i class="fab fa-facebook fa-3x text-primary"></i>
+                                        </div>
+                                        <h3 class="h4">Facebook Dashboard</h3>
+                                        <p class="text-muted mb-4">Analyze comments and posts from Facebook.</p>
+                                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-glow">Go to
+                                            Dashboard</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100 shadow hover-zoom">
+                                    <div class="card-body text-center p-4">
+                                        <div class="icon-wrapper mb-3 bg-info-light">
+                                            <i class="fab fa-twitter fa-3x text-info"></i>
+                                        </div>
+                                        <h3 class="h4">X (Twitter) Analysis</h3>
+                                        <p class="text-muted mb-4">Explore tweet sentiments and hashtag trends.</p>
+                                        <a href="{{ url_for('tweet_analysis') }}" class="btn btn-primary btn-glow">Go to
+                                            Tweet Analysis</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="py-5 bg-dark text-white">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <img src="/static/unnamed.png" alt="Bhopal Smart City"
+                            class="img-fluid rounded shadow floating">
+                    </div>
+                    <div class="col-lg-6">
+                        <h2 class="display-5 mb-4"><i class="fas fa-info-circle me-2"></i>About Us</h2>
+                        <div class="about-content">
+                            <p class="mb-3">Bhopal city has incorporated a special purpose vehicle (SPV) – Bhopal Smart
+                                City Development Corporation Limited (BSCDCL) (the "Authority"), to plan, design,
+                                implement, coordinate, and monitor the smart city projects in Bhopal.</p>
+                            <p class="mb-3">BSCDCL is a company incorporated under Indian Companies Act 2013, with equal
+                                shareholding from Madhya Pradesh Urban Development Company Limited (MPUDCL) on behalf of
+                                Government of Madhya Pradesh (GoMP), and Bhopal Municipal Corporation (BMC).</p>
+                            <p>It details projects aimed at enhancing urban infrastructure, sustainability, and quality
+                                of life.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center mb-5">
+                        <h2 class="display-5 mb-3"><i class="fas fa-envelope me-2"></i>Contact Us</h2>
+                        <p class="lead text-muted">Have questions? Get in touch with our team.</p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <form class="card shadow form-float p-4">
+                            <div class="mb-3">
+                                <label for="name" class="form-label"><i class="fas fa-user me-2"></i>Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label"><i class="fas fa-envelope me-2"></i>Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label"><i class="fas fa-phone me-2"></i>Phone</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="Your Phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label"><i
+                                        class="fas fa-comment me-2"></i>Message</label>
+                                <textarea class="form-control" id="message" rows="4"
+                                    placeholder="Your Message"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-glow w-100 py-2">Submit <i
+                                    class="fas fa-paper-plane ms-2"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="text-center text-muted py-3 border-top">
-        &copy; 2025 Social Media Sentiment Analysis
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="h5 mb-3"><i class="fas fa-map-marker-alt me-2"></i>Contact Us</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-home me-2"></i> Zone-14, Bhopal Municipal Corporation, BHEL,
+                            Govindpura, Bhopal - 462023 (MP)</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> bscdcl@smartbhopal.city</li>
+                        <li><i class="fas fa-phone me-2"></i> +91-755 270 4293 +91-755 270 4261</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Social Media Sentiment Analysis. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
+
 </body>
 
 </html>
