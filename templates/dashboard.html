@@ -1,77 +1,57 @@
-{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} {% block content %}
-<!-- <h2 class="text-center">Social Media Sentiment Analysis</h2>
-<p class="text-center">Welcome, {{ username }}!</p> -->
-<!-- Hero Section -->
-<section class="header d-flex align-items-center" style="background: #f8f9fa;">
+{% extends 'base.html' %}
+<!-- {% block title %}Dashboard{% endblock %} -->
+{% block content %}
 
-    <div class="row align-items-center">
-        <div class="col-md-6 hero-text" data-aos="fade-right">
-            <h1 class="h1">Social Media Sentiment Analysis</h1>
-            <p class="p">Analyze and visualize the opinions expressed on<br> social media platforms with real-time
-                sentiment
-                analysis.
-            </p>
-            <a href="#get-started" class="btn btn-primary">Get Started</a>
-        </div>
-        <div class="col-md-6 text-center" data-aos="fade-left">
-            <img src="/static/bhopal.webp" class="img-fluid rounded shadow-lg" alt="Learning Image">
-        </div>
-    </div>
-</section>
-
-
-<!-- Metrics Section -->
 <div class="row mt-4">
-
-    <!-- Total Posts -->
-    <div class="col-md-3 col-6 mb-3">
+    <!-- Total Stats -->
+    {% set stats = [
+    {'title': 'Total Posts', 'value': posts|length},
+    {'title': 'Total Comments', 'value': total_comments},
+    {'title': 'Likes', 'value': total_likes},
+    {'title': 'Shares', 'value': total_shares}
+    ] %}
+    {% for stat in stats %}
+    <div class="col-lg-3 col-sm-6 col-12 mb-3">
         <div class="card text-center small-card">
             <div class="card-body">
-                <h6 class="card-title">Total Posts</h6>
-                <p class="card-text">{{ posts|length }}</p>
+                <h6 class="card-title">{{ stat.title }}</h6>
+                <p class="card-text">{{ stat.value }}</p>
             </div>
         </div>
     </div>
-
-    <!-- Total Comments -->
-    <div class="col-md-3 col-6 mb-3">
-        <div class="card text-center small-card">
-            <div class="card-body">
-                <h6 class="card-title">Total Comments</h6>
-                <p class="card-text">{{ total_comments }}</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Likes -->
-    <div class="col-md-3 col-6 mb-3">
-        <div class="card text-center small-card">
-            <div class="card-body">
-                <h6 class="card-title">Likes</h6>
-                <p class="card-text">{{ total_likes }}</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Shares -->
-    <div class="col-md-3 col-6 mb-3">
-        <div class="card text-center small-card">
-            <div class="card-body">
-                <h6 class="card-title">Shares</h6>
-                <p class="card-text">{{ total_shares }}</p>
-            </div>
-        </div>
-    </div>
-
+    {% endfor %}
 </div>
 
-<div class="container my-5 border-container">
+<div class=" border-container">
     <div class="row">
-        <!-- Posts List Section -->
-        <div class="col-md-7">
+
+        <!-- Charts Section -->
+        <div class="col-lg-5 col-12">
+            <h4>Sentiment Analysis</h4>
+            <div class="chart-container mb-4">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+
+            <h4 class="mb-3 text-primary">Comment-wise Sentiment</h4>
+            <div class="chart-container" style="    position: relative;
+    height: 300px;
+    padding: 10px;
+    margin: 5px;">
+                <canvas id="sentimentOverTimeChart"></canvas>
+            </div>
+
+            <h4>Total Comment Sentiment</h4>
+            <div class="chart-container mb-4" style="position: relative; height: 300px;">
+                <canvas id="totalSentimentBarChart"></canvas>
+            </div>
+
+
+        </div>
+
+        <!-- Posts Section -->
+        <div class="col-lg-7 col-12">
             <h4>Posts</h4>
             <div id="posts-container" class="overflow-auto">
-                <!-- Looping through posts -->
                 {% for post in posts %}
                 <div class="card mb-3 post-item" data-post-id="{{ post.id }}" data-likes="{{ post.likes }}"
                     data-shares="{{ post.shares }}">
@@ -86,7 +66,7 @@
                         {% if post_sentiment_data[post.id]['Image URL'] %}
                         <div class="post-image mb-3">
                             <img src="{{ post_sentiment_data[post.id]['Image URL'] }}" alt="Post Image"
-                                class="img-fluid">
+                                class="img-fluid rounded">
                         </div>
                         {% endif %}
                         <h5>Comments</h5>
@@ -105,210 +85,201 @@
             </div>
         </div>
 
-        <!-- Sentiment Charts Section -->
-        <div class="col-md-5">
-            <div class="row">
-                <div class="col-md-12 mb-4">
-                    <h4>Sentiment Analysis</h4>
-                    <div class="chart-container">
-                        <canvas id="sentimentChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="col-md-12 mb-4">
-                    <h4>Sentiment Over Time</h4>
-                    <div class="chart-container">
-                        <canvas id="sentimentOverTimeChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
-
-<div class="container about-section">
-    <div class="row">
-        <!-- Left Side - Dummy Image -->
-        <div class="col-md-6">
-            <img src="/static/unnamed.png" alt="Dummy Image" class="about-image">
-        </div>
-        <!-- Right Side - Description -->
-        <div class="col-md-6 about-description">
-            <h2 class="about-title">About Us</h2>
-            <p>
-                Bhopal city has incorporated a special purpose vehicle (SPV) – Bhopal Smart City Development Corporation
-                Limited (BSCDCL) (the “Authority”), to plan, design, implement, coordinate, and monitor the smart city
-                projects in Bhopal. BSCDCL is a company incorporated under Indian Companies Act 2013, with equal
-                shareholding from Madhya Pradesh Urban Development Company
-                Limited (MPUDCL) on behalf of Government of Madhya Pradesh (GoMP), and Bhopal Municipal Corporation
-                (BMC).
-            </p>
-
-            <p> It details projects aimed at enhancing urban infrastructure, sustainability, and quality of life,
-                covering aspects like public transportation, digital services, and urban planning. The site also
-                features updates on projects, tenders, media,
-                and e-resources related to the development efforts in Bhopal.</p>
-        </div>
-    </div>
-</div>
-<section id="contact" class="contact">
-    <div class="container">
-        <h1>Contact Us</h1>
-        <form>
-            <input type="text" placeholder="Name" required>
-            <input type="email" placeholder="Email" required>
-            <input type="tel" placeholder="Phone">
-            <textarea placeholder="Your Message"></textarea>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-    <img src="/static/contact-us.jpg" class="img-con">
-</section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const postSentimentData = {{ post_sentiment_data| tojson }};
-    const sentimentTimeData = {{ sentiment_time_data| tojson }};
+    const postSentimentData = {{ post_sentiment_data | tojson }};
+    const sentimentTimeData = {{ sentiment_time_data | tojson }};
     let sentimentChart, sentimentOverTimeChart;
+    let commentWiseSentimentChart;
+
 
     function updateChart(postId) {
         const postData = postSentimentData[postId];
-
         const labels = ['Positive', 'Negative', 'Neutral'];
-        const data = [
-            postData['Positive'],
-            postData['Negative'],
-            postData['Neutral']
-        ];
+        const data = [postData['Positive'], postData['Negative'], postData['Neutral']];
 
-        if (sentimentChart) {
-            sentimentChart.destroy();
-        }
-
+        if (sentimentChart) sentimentChart.destroy();
         const ctx = document.getElementById('sentimentChart').getContext('2d');
         sentimentChart = new Chart(ctx, {
-            type: 'doughnut',  // Change from 'bar' to 'doughnut'
+            type: 'doughnut',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Number of Comments',
+                    label: 'Comments',
                     data: data,
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
+                    backgroundColor: ['rgba(75,192,192,0.2)', 'rgba(255,99,132,0.2)', 'rgba(153,102,255,0.2)'],
+                    borderColor: ['rgba(75,192,192,1)', 'rgba(255,99,132,1)', 'rgba(153,102,255,1)'],
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: {
-                    animateRotate: true
-                },
                 plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                }
+                    legend: { position: 'top' }
+                },
+                animation: { animateRotate: true }
             }
         });
 
         updateTimeChart(postId);
-        updateLikesShares(postId);
-    }
-
-    function updateLikesShares(postId) {
-        const postElement = document.querySelector(`.post-item[data-post-id='${postId}']`);
-        const likes = postElement.getAttribute('data-likes');
-        const shares = postElement.getAttribute('data-shares');
-
-        document.getElementById('likes-count').innerText = likes;
-        document.getElementById('shares-count').innerText = shares;
     }
 
     function updateTimeChart(postId) {
         const timeData = sentimentTimeData[postId];
-        // Format the date as DD-MM-YYYY
-        const labels = timeData.map(data => {
-            const date = new Date(data.created_time);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-based
-            const year = date.getFullYear();
-            return `${day}-${month}-${year}`;
-        });
-        const positiveData = timeData.map(data => data.Positive);
-        const negativeData = timeData.map(data => data.Negative);
-        const neutralData = timeData.map(data => data.Neutral);
 
-        if (sentimentOverTimeChart) {
-            sentimentOverTimeChart.destroy();
+        if (!timeData || !Array.isArray(timeData) || timeData.length === 0) {
+            console.warn(`No sentiment time data found for post ID: ${postId}`);
+            if (sentimentOverTimeChart) sentimentOverTimeChart.destroy();
+            return;
         }
 
-        const ctxOverTime = document.getElementById('sentimentOverTimeChart').getContext('2d');
-        sentimentOverTimeChart = new Chart(ctxOverTime, {
-            type: 'line',
+        const grouped = {};
+        timeData.forEach(entry => {
+            const date = new Date(entry.created_time);
+            const minuteKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+            if (!grouped[minuteKey]) {
+                grouped[minuteKey] = { Positive: 0, Neutral: 0, Negative: 0 };
+            }
+            grouped[minuteKey].Positive += parseInt(entry.Positive) || 0;
+            grouped[minuteKey].Neutral += parseInt(entry.Neutral) || 0;
+            grouped[minuteKey].Negative += parseInt(entry.Negative) || 0;
+        });
+
+        const labels = Object.keys(grouped);
+        const positives = labels.map(key => grouped[key].Positive);
+        const neutrals = labels.map(key => grouped[key].Neutral);
+        const negatives = labels.map(key => grouped[key].Negative);
+
+        if (sentimentOverTimeChart) sentimentOverTimeChart.destroy();
+
+        const ctx = document.getElementById('sentimentOverTimeChart').getContext('2d');
+        sentimentOverTimeChart = new Chart(ctx, {
+            type: 'bar',
             data: {
                 labels: labels,
                 datasets: [
                     {
                         label: 'Positive',
-                        data: positiveData,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false,
-                    },
-                    {
-                        label: 'Negative',
-                        data: negativeData,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        fill: false,
+                        data: positives,
+                        backgroundColor: '#28a74588',
+                        borderColor: '#28a745',
+                        borderWidth: 1,
+                        borderRadius: 5
                     },
                     {
                         label: 'Neutral',
-                        data: neutralData,
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        fill: false,
+                        data: neutrals,
+                        backgroundColor: '#6c757d88',
+                        borderColor: '#6c757d',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    },
+                    {
+                        label: 'Negative',
+                        data: negatives,
+                        backgroundColor: '#dc354588',
+                        borderColor: '#dc3545',
+                        borderWidth: 1,
+                        borderRadius: 5
                     }
                 ]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Sentiment Over Time (Per Minute)',
+                        font: { size: 18 }
+                    },
+                    legend: { position: 'top' },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                interaction: { mode: 'index', intersect: false },
                 scales: {
                     x: {
-                        title: {
-                            display: true,
-                            text: 'Date'
-                        }
+                        stacked: true,
+                        title: { display: true, text: 'Time' },
+                        ticks: { color: '#333', maxRotation: 45, minRotation: 30 },
+                        grid: { display: false }
                     },
                     y: {
-                        title: {
-                            display: true,
-                            text: 'Number of Comments'
-                        }
+                        stacked: true,
+                        beginAtZero: true,
+                        title: { display: true, text: 'Comment Count' },
+                        ticks: { color: '#333' },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
                     }
                 }
             }
         });
     }
 
-    document.querySelectorAll('.post-item').forEach(item => {
-        item.addEventListener('click', function () {
-            const postId = this.getAttribute('data-post-id');
+    function renderTotalSentimentBarChart() {
+        const totals = { Positive: 0, Negative: 0, Neutral: 0 };
+
+        Object.values(postSentimentData).forEach(data => {
+            totals.Positive += data['Positive'] || 0;
+            totals.Negative += data['Negative'] || 0;
+            totals.Neutral += data['Neutral'] || 0;
+        });
+
+        const ctx = document.getElementById('totalSentimentBarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    label: 'Total Comments',
+                    data: [totals.Positive, totals.Negative, totals.Neutral],
+                    backgroundColor: ['#28a74588', '#dc354588', '#6c757d88'],
+                    borderColor: ['#28a745', '#dc3545', '#6c757d'],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Total Comment Sentiment Across All Posts',
+                        font: { size: 18 }
+                    },
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Comment Count' },
+                        ticks: { color: '#333' }
+                    },
+                    x: {
+                        ticks: { color: '#333' }
+                    }
+                }
+            }
+        });
+    }
+
+    // Event binding
+    const postItems = document.querySelectorAll('.post-item');
+    postItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const postId = item.getAttribute('data-post-id');
             updateChart(postId);
         });
     });
 
+    // Initial load
     if (postItems.length > 0) {
-        const firstPostId = postItems[0].getAttribute('data-post-id');
-        updateChart(firstPostId);
+        updateChart(postItems[0].getAttribute('data-post-id'));
     }
+    renderTotalSentimentBarChart(); // Load the new chart
 </script>
+
 {% endblock %}

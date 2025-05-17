@@ -1,50 +1,82 @@
+/* ======================
+   Reset & Base Styles
+========================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* html,
-body {
-    height: 100%;
+:root {
+    --primary: #23395d;
+    --primary-light: rgba(35, 57, 93, 0.1);
+    --info-light: rgba(23, 162, 184, 0.1);
+    --transition: all 0.3s ease;
 }
 
-.container-fluid {
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-.row {
-    align-items: stretch;
-}
+/* ======================
+   Card Styling
+========================= */
+/* 
 
-.scroll {
-    overflow-y: auto;
-    max-height: calc(100vh - 160px);
-    /* Adjust based on navbar & footer height */
 
-*/ body {
-    background-color: #f8f9fa;
-    color: #212529;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+*/
 
-/* Card Styling */
 .card {
     background-color: rgba(255, 255, 255, 0.9);
     color: #212529;
     border: none;
     border-radius: 10px;
+    max-width: 900px;
     padding: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Chart Canvas */
+.scroll {
+    /* min-width: 700px; */
+    max-height: 1440px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ======================
+   Chart Canvas
+========================= */
 canvas {
     width: 100% !important;
     height: auto !important;
 }
 
-/* Tweet Images */
+/* ======================
+   Tweet Media Styling
+========================= */
 .tweet-image {
     width: 100px;
     height: 100px;
@@ -54,28 +86,33 @@ canvas {
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Tweet Media Container */
 .media-container {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
 }
 
-/* Tweet Content */
+/* ======================
+   Tweet Content
+========================= */
 .tweet-content {
     flex: 1;
     min-width: 250px;
     margin-top: 10px;
 }
 
-/* List Styling */
+/* ======================
+   List Items
+========================= */
 .list-group-item {
     background-color: #ffffff;
     border: 1px solid #dee2e6;
     border-radius: 6px;
 }
 
-/* Badges */
+/* ======================
+   Badges
+========================= */
 .badge {
     font-size: 90%;
     padding: 6px 10px;
@@ -97,37 +134,79 @@ canvas {
     color: #fff;
 }
 
-/* Scroll */
+/* ======================
+   Scrollable Area
+========================= */
 .tweet-scroll {
     max-height: 600px;
     overflow-y: auto;
 }
 
-/* Navbar */
-.navbar.sticky-top {
-    z-index: 1050;
-    background-color: #ffffff !important;
-    border-bottom: 1px solid #ddd;
-}
-
-.navbar h4 {
-    color: #333;
-}
-
-.navbar form .form-control {
+/* ======================
+   Search Form & Buttons
+========================= */
+/* .navbar-form .form-control {
     width: 100%;
     max-width: 250px;
+} */
+.navbar {
+    padding: 0.8rem 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(#06080a 100%);
 }
 
-/* Footer */
+.navbar-brand {
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    font-size: 1.4rem;
+}
+
+.btn {
+    margin: 8px;
+}
+
+/* ======================
+   Footer
+========================= */
 footer {
-    background-color: #f8f9fa;
-    color: #6c757d;
-    font-size: 14px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+    padding: 2rem 0;
 }
 
-/* Responsive */
+footer ul li {
+    margin-bottom: 0.5rem;
+}
+
+footer hr {
+    opacity: 0.1;
+}
+
+/* ======================
+   Responsive Design
+========================= */
 @media (max-width: 768px) {
+    .navbar-form {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .navbar-form .form-control,
+    .navbar-form button {
+        width: 100%;
+        margin-right: 0 !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .navbar-form button {
+        margin-bottom: 0;
+    }
+
     .navbar h4 {
         font-size: 18px;
     }
