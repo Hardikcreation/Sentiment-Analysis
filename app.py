@@ -14,6 +14,7 @@ app.secret_key = 'supersecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hardik%40123@localhost/tweet'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
 # Init extensions
 db.init_app(app)
 migrate = Migrate(app, db)
