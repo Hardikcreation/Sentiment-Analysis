@@ -21,8 +21,9 @@
         <div class="container-fluid">
             <div
                 class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100">
-                <h4 class="m-0 font-weight-bold mb-2 mb-md-0 me-md-auto text-white">X Analysis</h4>
-                <!-- Note the `me-md-auto` -->
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+                    <h4 class="font-weight-bold text-white">X Analysis</h4>
+                </a> <!-- Note the `me-md-auto` -->
                 <form class="d-flex" method="GET" action="{{ url_for('tweet_analysis') }}">
                     <input class="form-control me-sm-2  m-2" type="search" name="search" placeholder="Search hashtag"
                         aria-label="Search" />
@@ -146,6 +147,8 @@
         const timeLabels = {{ time_labels | tojson }};
         const timeCounts = {{ time_counts | tojson }};
     </script>
+
+
 
     <!-- Custom Script -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
