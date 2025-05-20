@@ -1,11 +1,12 @@
 import os
+from flask_migrate import Migrate
 import tweepy
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from transformers import XLMRobertaTokenizer, AutoModelForSequenceClassification, pipeline
 from deep_translator import GoogleTranslator
 from dotenv import load_dotenv
-from app import create_app
+from flask import Flask
 from models import Tweet
 from extensions import db
 
@@ -17,16 +18,25 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Twitter API
-BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAACYwwAEAAAAAvcTUDghjzMxc0D0hGeajhNkvrzw%3DunrtIILl6GXrH6PUOoNEHvGCD6kwl73277bZxuwoB1Xcv8a8YH"
+BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAEdF1wEAAAAAZ1lICJ8z1DHqBRD5E5LBDEABh%2FE%3Dh6hGItuh0Oa3muDTlUSbq4hRRZe5CxLWVK7gV4OtV3m6uaSXhB"
 if not BEARER_TOKEN:
     raise ValueError("Twitter Bearer Token is missing in .env")
 
 client = tweepy.Client(bearer_token=BEARER_TOKEN)
 
 # Flask App
-app = create_app()
+app = Flask(__name__)
+app.secret_key = 'supersecretkey'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hardik%40123@localhost/sentiment_analysis'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Sentiment analysis helper
+# Init extensions
+db.init_app(app)
+migrate = Migrate(app, db)
+
+# Ensure database is created before handling requests
+with app.app_context():
+    db.create_all()
 
 # Load the multilingual sentiment analysis model
 model_name = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
@@ -37,9 +47,6 @@ model = AutoModelForSequenceClassification.from_pretrained(model_name)
 sentiment_pipeline = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
 def convert_to_sentiment(label):
-    """
-    Convert model output label to sentiment category.
-    """
     label = label.lower()
     if label == 'negative':
         return 'Negative'
@@ -47,129 +54,100 @@ def convert_to_sentiment(label):
         return 'Neutral'
     elif label == 'positive':
         return 'Positive'
-    else:
-        return 'Neutral'
+    return 'Neutral'
 
 def analyze_sentiment(text):
-    """
-    Detect and return sentiment for a given text input.
-    """
     if not text:
         return 'Neutral'
-    
     try:
-        # Translate to English if not already
         translated_text = GoogleTranslator(source='auto', target='en').translate(text)
         result = sentiment_pipeline(translated_text)[0]
-        label = result['label']
-        return convert_to_sentiment(label)
+        return convert_to_sentiment(result['label'])
     except Exception as e:
-        print(f"Error during sentiment analysis: {e}")
+        logger.error(f"Sentiment analysis error: {e}")
         return 'Neutral'
 
-
-# Main tweet fetcher by date range
-def get_tweets_by_hashtag(hashtag, max_results=10, start_date_str=None, end_date_str=None):
+def get_tweets_by_hashtag(hashtag, max_results=10, start_date=None, end_date=None):
     with app.app_context():
-        # Validate date input
-        if not start_date_str or not end_date_str:
-            logger.error("Start date and end date must be provided in 'YYYY-MM-DD' format.")
-            return
+        logger.info(f"Fetching recent tweets with hashtag #{hashtag}")
 
         try:
-            start_date = datetime.strptime(start_date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-            end_date = datetime.strptime(end_date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-        except ValueError as e:
-            logger.error(f"Date format error: {e}")
-            return
+            query = f"#{hashtag} -is:retweet"
+            tweets = client.search_recent_tweets(
+                query=query,
+                max_results=max_results,
+                tweet_fields=["public_metrics", "created_at", "author_id", "attachments"],
+                expansions=["attachments.media_keys"],
+                media_fields=["type", "url", "preview_image_url"],
+                start_time=start_date,
+                end_time=end_date
+            )
 
-        if start_date > end_date:
-            logger.error("Start date must be earlier than or equal to end date.")
-            return
+            media_dict = {}
+            if tweets.includes and "media" in tweets.includes:
+                media_dict = {media.media_key: media for media in tweets.includes["media"]}
 
-        current_date = start_date
-        while current_date < end_date:
-            next_date = current_date + timedelta(days=1)
-            logger.info(f"Fetching tweets from {current_date.date()} to {next_date.date()}")
+            if tweets.data:
+                for tweet in tweets.data:
+                    tweet_id = str(tweet.id)
+                    author_id = str(tweet.author_id)
+                    text = tweet.text
+                    created_time = tweet.created_at
+                    metrics = tweet.public_metrics or {}
+                    sentiment = analyze_sentiment(text)
 
-            try:
-                query = f"#{hashtag} -is:retweet"
-                tweets = client.search_recent_tweets(
-                    query=query,
-                    start_time=current_date.isoformat(),
-                    end_time=next_date.isoformat(),
-                    max_results=max_results,
-                    tweet_fields=["public_metrics", "created_at", "author_id", "attachments"],
-                    expansions=["attachments.media_keys"],
-                    media_fields=["type", "url", "preview_image_url"]
-                )
+                    media_urls = []
+                    if hasattr(tweet, "attachments") and tweet.attachments:
+                        media_keys = tweet.attachments.get("media_keys", [])
+                        for key in media_keys:
+                            media = media_dict.get(key)
+                            if media:
+                                if media.type == "photo" and hasattr(media, "url"):
+                                    media_urls.append(media.url)
+                                elif media.type in ["video", "animated_gif"] and hasattr(media, "preview_image_url"):
+                                    media_urls.append(media.preview_image_url)
 
-                media_dict = {}
-                if tweets.includes and "media" in tweets.includes:
-                    media_dict = {media.media_key: media for media in tweets.includes["media"]}
+                    existing_tweet = Tweet.query.get(tweet_id)
+                    if not existing_tweet:
+                        new_tweet = Tweet(
+                            id=tweet_id,
+                            author_id=author_id,
+                            hashtag=hashtag,
+                            text=text,
+                            created_time=created_time,
+                            likes=metrics.get('like_count', 0),
+                            retweets=metrics.get('retweet_count', 0),
+                            replies=metrics.get('reply_count', 0),
+                            quotes=metrics.get('quote_count', 0),
+                            sentiment=sentiment,
+                            media_urls=", ".join(media_urls) if media_urls else None
+                        )
+                        db.session.add(new_tweet)
+                        logger.info(f"Stored Tweet: {tweet_id} with media: {media_urls}")
+                    else:
+                        logger.info(f"Tweet {tweet_id} already exists. Skipping.")
 
-                if tweets.data:
-                    for tweet in tweets.data:
-                        tweet_id = str(tweet.id)
-                        author_id = str(tweet.author_id)
-                        text = tweet.text
-                        created_time = tweet.created_at
-                        metrics = tweet.public_metrics or {}
+                db.session.commit()
+                logger.info("Tweets stored successfully.")
+            else:
+                logger.info("No tweets found.")
 
-                        sentiment = analyze_sentiment(text)
-
-                        media_urls = []
-                        if hasattr(tweet, "attachments") and tweet.attachments:
-                            media_keys = tweet.attachments.get("media_keys", [])
-                            for key in media_keys:
-                                media = media_dict.get(key)
-                                if media:
-                                    if media.type == "photo" and hasattr(media, "url"):
-                                        media_urls.append(media.url)
-                                    elif media.type in ["video", "animated_gif"] and hasattr(media, "preview_image_url"):
-                                        media_urls.append(media.preview_image_url)
-
-                        # Check for duplicates
-                        existing_tweet = Tweet.query.get(tweet_id)
-                        if not existing_tweet:
-                            new_tweet = Tweet(
-                                id=tweet_id,
-                                author_id=author_id,
-                                hashtag=hashtag,
-                                text=text,
-                                created_time=created_time,
-                                likes=metrics.get('like_count', 0),
-                                retweets=metrics.get('retweet_count', 0),
-                                replies=metrics.get('reply_count', 0),
-                                quotes=metrics.get('quote_count', 0),
-                                sentiment=sentiment,
-                                media_urls=", ".join(media_urls) if media_urls else None
-                            )
-                            db.session.add(new_tweet)
-                            logger.info(f"Stored Tweet: {tweet_id} with media: {media_urls}")
-                        else:
-                            logger.info(f"Tweet {tweet_id} already exists. Skipping.")
-
-                    db.session.commit()
-                    logger.info("Tweets stored successfully.")
-                else:
-                    logger.info("No tweets found in this range.")
-
-            except tweepy.TooManyRequests:
-                logger.warning("Rate limit hit. Please retry later.")
-                break
-            except tweepy.TweepyException as e:
-                logger.error(f"Twitter API error: {e}")
-            except Exception as e:
-                logger.error(f"Unexpected error: {e}")
-
-            current_date = next_date
+        except tweepy.TooManyRequests:
+            logger.warning("Rate limit hit. Please retry later.")
+        except tweepy.TweepyException as e:
+            logger.error(f"Twitter API error: {e}")
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}")
 
 # Entry point
 if __name__ == '__main__':
+    # Set date range (May 15 to May 19, 2025)
+    start_date = datetime(2025, 5, 15, 0, 0, 0).isoformat("T") + "Z"
+    end_date = datetime(2025, 5, 19, 23, 59, 59).isoformat("T") + "Z"
+
     get_tweets_by_hashtag(
-        hashtag="IStandwithSharmishta",
+        hashtag="Bhopal",
         max_results=10,
-        start_date_str="2025-05-12",
-        end_date_str="2025-05-14"  # End date is exclusive 
+        start_date=start_date,
+        end_date=end_date
     )
