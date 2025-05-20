@@ -1,18 +1,26 @@
-import requests
+# main.py
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 import json
-from flask import Flask
-from datetime import datetime
-from models import db, Post, Comment
 import hashlib
 import asyncio
 import aiohttp
+from datetime import datetime
+from flask import Flask
+from models import db, Post, Comment
 from transformers import AutoModelForSequenceClassification, XLMRobertaTokenizer, pipeline
 
+# Flask app setup
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hardik%40123@localhost/tweet'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+# Async function to fetch JSON data from URL
 async def fetch_url(session, url):
     try:
         async with session.get(url) as response:
@@ -21,6 +29,7 @@ async def fetch_url(session, url):
         print(f"Error fetching URL {url}: {e}")
         return {}
 
+# Main fetch-and-store logic
 async def fetch_and_store_data(page_id, access_token):
     async with aiohttp.ClientSession() as session:
         def get_posts_url():
@@ -29,6 +38,7 @@ async def fetch_and_store_data(page_id, access_token):
         def get_comments_url(post_id):
             return f"https://graph.facebook.com/v20.0/{post_id}/comments?limit=20&access_token={access_token}"
 
+        # Load sentiment analysis pipeline
         model_name = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
         tokenizer = XLMRobertaTokenizer.from_pretrained(model_name)
         model = AutoModelForSequenceClassification.from_pretrained(model_name)
@@ -62,6 +72,7 @@ async def fetch_and_store_data(page_id, access_token):
             data = f"{post_id}_{created_time}_{message}"
             return hashlib.md5(data.encode()).hexdigest()
 
+        # Fetch posts
         posts_url = get_posts_url()
         print(f"Fetching posts from: {posts_url}")
         posts_response = await fetch_url(session, posts_url)
@@ -104,6 +115,7 @@ async def fetch_and_store_data(page_id, access_token):
             comments_url = get_comments_url(post_id)
             post_tasks.append(fetch_url(session, comments_url))
 
+        # Fetch comments in parallel
         comment_responses = await asyncio.gather(*post_tasks)
 
         for post, comments_data in zip(posts, comment_responses):
@@ -136,8 +148,10 @@ async def fetch_and_store_data(page_id, access_token):
             db.session.rollback()
             print(f"Database commit error: {e}")
 
-with app.app_context():
-    db.create_all()
-    page_id = '1437145013080740'
-    access_token = 'EAAMQPmFBDa0BO0DZBZC1L4DGpYEKKx5K8ybibBiJnXcWOP1rtYHPNZC8ONDwmtIfQJZBIjUKbT8V3HZAj4wDpzavykU6cr47SVD1dCrEOBC0dFTjTLxRpOUIOBJrvePOk9dmTVyUjuOslqY0rOhpkwGhCmsybHsbwSawOG3dX9NMAPDvIhmJZArZAIVqPtb'
-    asyncio.run(fetch_and_store_data(page_id, access_token))
+# Run inside Flask context
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+        page_id = os.getenv('FACEBOOK_PAGE_ID')
+        access_token = os.getenv('FACEBOOK_ACCESS_TOKEN')
+        asyncio.run(fetch_and_store_data(page_id, access_token))

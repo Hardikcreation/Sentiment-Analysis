@@ -1,16 +1,16 @@
 import os
+from dotenv import load_dotenv
+from flask import Flask
 from flask_migrate import Migrate
 import tweepy
 import logging
 from datetime import datetime
 from transformers import XLMRobertaTokenizer, AutoModelForSequenceClassification, pipeline
 from deep_translator import GoogleTranslator
-from dotenv import load_dotenv
-from flask import Flask
-from models import Tweet
 from extensions import db
+from models import Tweet
 
-# Load environment variables
+# Load environment variables from .env file
 load_dotenv()
 
 # Setup logger
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Twitter API
-BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAEdF1wEAAAAAZ1lICJ8z1DHqBRD5E5LBDEABh%2FE%3Dh6hGItuh0Oa3muDTlUSbq4hRRZe5CxLWVK7gV4OtV3m6uaSXhB"
+BEARER_TOKEN = os.getenv("TWITTER_BEARER_TOKEN")
 if not BEARER_TOKEN:
     raise ValueError("Twitter Bearer Token is missing in .env")
 
@@ -26,24 +26,25 @@ client = tweepy.Client(bearer_token=BEARER_TOKEN)
 
 # Flask App
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hardik%40123@localhost/sentiment_analysis'
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "fallback-secret")
+
+# Database Config
+DB_URI = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Init extensions
 db.init_app(app)
 migrate = Migrate(app, db)
 
-# Ensure database is created before handling requests
+# Ensure DB tables are created
 with app.app_context():
     db.create_all()
 
-# Load the multilingual sentiment analysis model
+# Load the sentiment model
 model_name = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
 tokenizer = XLMRobertaTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
-
-# Create a sentiment analysis pipeline
 sentiment_pipeline = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
 
 def convert_to_sentiment(label):
@@ -139,12 +140,10 @@ def get_tweets_by_hashtag(hashtag, max_results=10, start_date=None, end_date=Non
         except Exception as e:
             logger.error(f"Unexpected error: {e}")
 
-# Entry point
+# Entry Point
 if __name__ == '__main__':
-    # Set date range (May 15 to May 19, 2025)
     start_date = datetime(2025, 5, 15, 0, 0, 0).isoformat("T") + "Z"
     end_date = datetime(2025, 5, 19, 23, 59, 59).isoformat("T") + "Z"
-
     get_tweets_by_hashtag(
         hashtag="ipl",
         max_results=12,
