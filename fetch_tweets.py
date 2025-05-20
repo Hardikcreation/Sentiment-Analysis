@@ -146,8 +146,8 @@ if __name__ == '__main__':
     end_date = datetime(2025, 5, 19, 23, 59, 59).isoformat("T") + "Z"
 
     get_tweets_by_hashtag(
-        hashtag="Bhopal",
-        max_results=10,
+        hashtag="ipl",
+        max_results=12,
         start_date=start_date,
         end_date=end_date
     )

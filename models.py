@@ -2,16 +2,16 @@ import hashlib
 from extensions import db
 
 class Tweet(db.Model):
-    id = db.Column(db.String, primary_key=True)
-    author_id = db.Column(db.String)
-    hashtag = db.Column(db.String)
-    text = db.Column(db.Text)
+    id = db.Column(db.String(255), primary_key=True)          # Usually IDs fit within 50 chars
+    author_id = db.Column(db.String(50))
+    hashtag = db.Column(db.String(100))
+    text = db.Column(db.Text)                                # Text can remain Text (no length needed)
     created_time = db.Column(db.DateTime)
     likes = db.Column(db.Integer)
     retweets = db.Column(db.Integer)
     replies = db.Column(db.Integer)
     quotes = db.Column(db.Integer)
-    sentiment = db.Column(db.String)
+    sentiment = db.Column(db.String(20))
     media_urls = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
